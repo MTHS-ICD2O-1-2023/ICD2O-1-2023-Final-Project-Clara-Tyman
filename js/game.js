@@ -8,9 +8,13 @@
 
 // scene import statements
 import SplashScene from './splashScene.js'
+import TitleScene from './titleScene.js'
+import MenuScene from "./menuScene.js"
 
 // create new game scene
 const splashScene = new SplashScene()
+const titleScene = new TitleScene()
+const menuScene = new MenuScene()
 
 //* Game scene */
 const config = {
@@ -35,5 +39,7 @@ console.log("Game start point")
 
 // load scenes
 game.scene.add('splashScene', splashScene)
+game.scene.add('titleScene', titleScene)
+game.scene.add("menuScene", menuScene)
 
 game.scene.start("splashScene")
