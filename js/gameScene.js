@@ -14,14 +14,13 @@ class GameScene extends Phaser.Scene {
         const anball = this.physics.add.sprite(ballXLocation, -100, 'ball')
         anball.body.velocity.y = 200
         anball.body.velocity.x = ballXVelocity
-        this.ball.add(anball)
     }
 
     constructor() {
         super({ key: "gameScene" })
 
         this.line = null
-        this.firemissile = false
+        this.line2 = null
         this.score = 0
         this.scoreText = null
         this.scoreTextStyle = { font: '65px Ariel', fill: '#ffffff', align: 'center' }
@@ -37,7 +36,7 @@ class GameScene extends Phaser.Scene {
 
         this.load.image("gameSceneImage", "./assets/gameSceneImage.jpg")
         this.load.image("line", "./assets/line.png")
-        this.load.image('missile', './assets/missile.jpg')
+        this.load.image("line2", "./assets/line2.png")
         this.load.image('ball', './assets/ball.png')
     }
 
@@ -47,38 +46,43 @@ class GameScene extends Phaser.Scene {
 
         this.scoreText = this.add.text(10, 10, 'Score: ' + this.score.toString(), this.scoreTextStyle)
 
+        // line group
+        this.lineGroup = this.physics.add.group()
         this.line = this.physics.add.sprite(1920 / 2, 1080 - 100, "line")
+        this.line2 = this.physics.add.sprite(1920 / 2, 1080 - 1000, "line2")
         this.line.scale = 0.5
-        // missile group
-        this.missileGroup = this.physics.add.group()
+        this.line2.scale = 0.5
 
-        this.ball.scale = 0.5
         this.createball()
+        this.ball = function () {
+            // Assign image's width, height to vars
+            var img_width = img.width
+            var img_height = img.height
+        }
 
-        // Collisions between missiles and balls
-        this.physics.add.collider(this.missileGroup, this.ball, function (missileCollide, ballCollide) {
-            ballCollide.destroy()
-            missileCollide.destroy()
-            this.score = this.score + 1
-            this.scoreText.setText('Score: ' + this.score.toString())
-            this.createball()
-            this.createball()
-        }.bind(this))
+        // Handle line-Ball collisions
+        if (this.ball.x - this.ball.width <= this.line.x && this.ball.x >= this.line.x - this.line.width) {
+            if (this.ball.y <= this.line.y + this.line.height && this.ball.y + this.ball.height >= this.line.y) {
+                this.ball.x = (this.line.x + this.ball.width)
+                this.ball.moveX = DIRECTION.RIGHT
+            }
+        }
 
-        this.physics.add.collider(this.line, this.ball, function (lineCollide, ballCollide) {
-            this.physics.pause()
-            ballCollide.destroy()
-            lineCollide.destroy()
-            this.gameOverText = this.add.text(1920 / 2, 1080 / 2, 'Game Over!\nClick to play again.', this.gameOverTextStyle).setOrigin(0.5)
-            this.gameOverText.setInteractive({ useHandCursor: true })
-            this.gameOverText.on('pointerdown', () => this.scene.start('gameScene'))
-        }.bind(this))
+        // Handle line2-ball collision
+        if (this.ball.x - this.ball.width <= this.line2.x && this.ball.x >= this.line2.x - this.line2.width) {
+            if (this.ball.y <= this.line2.y + this.line2.height && this.ball.y + this.ball.height >= this.line2.y) {
+                this.ball.x = (this.line2.x - this.ball.width)
+                this.ball.moveX = DIRECTION.LEFT
+            }
+        }
     }
 
     update(time, delta) {
         const keyLeftObj = this.input.keyboard.addKey('LEFT')
         const keyRightObj = this.input.keyboard.addKey('RIGHT')
-        const keySpaceObj = this.input.keyboard.addKey('SPACE')
+
+        const keyAObj = this.input.keyboard.addKey('A')
+        const keyDObj = this.input.keyboard.addKey('D')
 
         if (keyLeftObj.isDown === true) {
             this.line.x -= 15
@@ -94,24 +98,19 @@ class GameScene extends Phaser.Scene {
             }
         }
 
-        if (keySpaceObj.isDown === true) {
-            if (this.firemissile === false) {
-                this.firemissile = true
-                const aNewmissile = this.physics.add.sprite(this.line.x, this.line.y, 'missile')
-                this.missileGroup.add(aNewmissile)
+        if (keyAObj.isDown === true) {
+            this.line2.x -= 15
+            if (this.line2.x < 0) {
+                this.line2.x = 0
             }
         }
 
-        if (keySpaceObj.isUp === true) {
-            this.firemissile = false
-        }
-
-        this.missileGroup.children.each(function (item) {
-            item.y = item.y - 15
-            if (item.y < 0) {
-                item.destroy()
+        if (keyDObj.isDown === true) {
+            this.line2.x += 15
+            if (this.line2.x > 1920) {
+                this.line2.x = 1920
             }
-        })
+        }
     }
 }
 
