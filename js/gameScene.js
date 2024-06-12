@@ -6,27 +6,27 @@
 // Created on: June 2024
 // This is the Game Scene
 
-constructor() 
-    ({ key: "gameScene" })
+class gameScene extends Phaser.Scene {
+    constructor() {
+        super({ key: "gameScene" })
+        this.line = null
+        this.score = 0
+        this.scoreText = null
+        this.scoreTextStyle = { font: '65px Ariel', fill: '#ffffff', align: 'center' }
+        this.gameOverTextStyle = { font: '65px Ariel', fill: '#ff0000', align: 'center' }
+    }
 
-    this.line = null
-    this.score = 0
-    this.scoreText = null
-    this.scoreTextStyle = { font: '65px Ariel', fill: '#ffffff', align: 'center' }
-    this.gameOverTextStyle = { font: '65px Ariel', fill: '#ff0000', align: 'center' }
+    init(data) {
+        this.cameras.main.setBackgroundColor('#0x5f6e7a')
+    }
 
-
-init(data) 
-    this.cameras.main.setBackgroundColor('#0x5f6e7a')
-
-
-    preload() 
+    preload() {
         console.log("Game Scene")
-
         this.load.image("gameSceneImage", "./assets/gameSceneImage.jpg")
         this.load.image("line", "./assets/line.png")
+    }
 
-    create(data) 
+    create(data) {
         // Game key input
         game.physics.startSystem(Phaser.Physics.ARCADE)
 
@@ -45,7 +45,7 @@ init(data)
         this.player.anchor.setTo(0.5, 0.5)
         this.player.scale.x = 0.55
         this.player.scale.y = 0.25
-        game.physics.arcade.enable(this.player)
+        this.game.physics.arcade.enable(this.player)
         this.player.body.collideWorldBounds = true
         this.player.body.immovable = true
 
@@ -54,7 +54,7 @@ init(data)
         this.player2.anchor.setTo(0.5, 0.5)
         this.player2.scale.x = 0.55
         this.player2.scale.y = 0.25
-        game.physics.arcade.enable(this.player2)
+        this.game.physics.arcade.enable(this.player2)
         this.player2.body.collideWorldBounds = true
         this.player2.body.immovable = true
 
@@ -66,8 +66,9 @@ init(data)
         this.ball.body.bounce.set(1)
         this.ball.body.collideWorldBounds = true
         //this.ball.anchor.setTo(0.5, 0.5)
+    }
 
-    update(time, delta)
+    update(time, delta) {
         // keyboard input, either arrows for player, wasd for player2
         this.movePlayer()
         this.moveplayer2()
@@ -92,45 +93,49 @@ init(data)
         }
 
 
-    const keyLeftObj = this.input.keyboard.addKey('LEFT')
-    const keyRightObj = this.input.keyboard.addKey('RIGHT')
+        const keyLeftObj = this.input.keyboard.addKey('LEFT')
+        const keyRightObj = this.input.keyboard.addKey('RIGHT')
 
-    const keyAObj = this.input.keyboard.addKey('A')
-    const keyDObj = this.input.keyboard.addKey('D')
+        const keyAObj = this.input.keyboard.addKey('A')
+        const keyDObj = this.input.keyboard.addKey('D')
 
-    if(keyLeftObj.isDown === true) {
-        this.line.x -= 15
-        if (this.line.x < 0) {
-    this.line.x = 0
-}
+        if (keyLeftObj.isDown === true) {
+            this.line.x -= 15
+            if (this.line.x < 0) {
+                this.line.x = 0
+            }
+        }
+
+        if (keyRightObj.isDown === true) {
+            this.line.x += 15
+            if (this.line.x > 1920) {
+                this.line.x = 1920
+            }
+        }
+
+        if (keyAObj.isDown === true) {
+            this.line.x -= 15
+            if (this.line.x < 0) {
+                this.line.x = 0
+            }
+        }
+
+        if (keyDObj.isDown === true) {
+            this.line.x += 15
+            if (this.line.x > 1920) {
+                this.line.x = 1920
+            }
+        }
+
+        ballCollision()
+        this.ball.onLinePlayer = this.ball.onLinePlayer2 = false
+        game.physics.arcade.collide(this.player, this.ball, function () { this.ball.onLinePlayer = true; }, null, this)
+        game.physics.arcade.collide(this.player2, this.ball, function () { this.ball.onLinePlayer2 = true; }, null, this)
+
+        ballLost()
+        this.ball.reset(game.world.centerX, game.world.centerY)
+        game.time.events.add(2000, function () { this.ball.body.velocity.set(-200, 0); }, this)
     }
-
-if (keyRightObj.isDown === true) {
-    this.line.x += 15
-    if (this.line.x > 1920) {
-        this.line.x = 1920
-    }
 }
 
-if (keyAObj.isDown === true) {
-    this.line.x -= 15
-    if (this.line.x < 0) {
-        this.line.x = 0
-    }
-}
-
-if (keyDObj.isDown === true) {
-    this.line.x += 15
-    if (this.line.x > 1920) {
-        this.line.x = 1920
-    }
-}
-
-ballCollision() 
-    this.ball.onLinePlayer = this.ball.onLinePlayer2 = false
-    game.physics.arcade.collide(this.player, this.ball, function () { this.ball.onLinePlayer = true; }, null, this)
-    game.physics.arcade.collide(this.player2, this.ball, function () { this.ball.onLinePlayer2 = true; }, null, this)
-
-ballLost()
-    this.ball.reset(game.world.centerX, game.world.centerY)
-    game.time.events.add(2000, function () { this.ball.body.velocity.set(-200, 0); }, this)
+export default gameScene
