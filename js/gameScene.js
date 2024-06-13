@@ -25,6 +25,7 @@ class gameScene extends Phaser.Scene {
         this.load.image("gameSceneImage", "./assets/gameSceneImage.jpg")
         this.load.image("line", "./assets/line.png")
         this.load.image("line2", "./assets/line2.png")
+        this.load.image("ball", "./assets/ball.png")
     }
 
     create(data) {
@@ -41,35 +42,31 @@ class gameScene extends Phaser.Scene {
         this.lineGroup = this.physics.add.group()
         this.line = this.physics.add.sprite(1920 / 2, 1080 - 100, "line")
         this.line2 = this.physics.add.sprite(1920 / 2, 1080 - 1000, "line2")
-        this.line.scale = 0.5
-        this.line2.scale = 0.5
+        this.line.scale = 0.4
+        this.line2.scale = 0.4
 
-
-        this.ball = this.physics.add.sprite(this.world.centerX, this.world.centerY, 'ball')
-        this.physics.arcade.enable(this.ball)
-        this.ball.body.velocity.set(-200, 0)
-        this.ball.onLine = false
-        this.ball.onLine2 = false
+        this.ball = this.physics.add.sprite(1920 / 2, 1080 / 2, 'ball')
+        this.ball.body.velocity.set(40, 200)
+        this.ball.scale = 0.2
+        this.ball.line = false
+        this.ball.line2 = false
         this.ball.body.bounce.set(1)
         this.ball.body.collideWorldBounds = true
-        //this.ball.anchor.setTo(0.5, 0.5)
     }
 
     update(time, delta) {
         // keyboard input, either arrows for line, wasd for line2
-        this.moveLine()
-        this.moveline2()
-        this.ballCollision()
+        //this.ballCollision()
 
-        if (this.ball.onLine) {
+        if (this.ball.line) {
             this.ball.body.velocity.y = ((Math.random() * 50) + this.line.body.velocity.y)
             this.ball.body.velocity.x += (0.1) * this.ball.body.velocity.x
-            this.ball.onLine = false
+            this.ball.line = false
         }
-        else if (this.ball.onLine2) {
+        else if (this.ball.Line2) {
             this.ball.body.velocity.y = ((Math.random() * 50) + this.line2.body.velocity.y)
             this.ball.body.velocity.x += (0.1) * this.ball.body.velocity.x
-            this.ball.onLine2 = false
+            this.ball.line2 = false
         }
 
         if (this.ball.x >= this.width) {
@@ -112,16 +109,17 @@ class gameScene extends Phaser.Scene {
                 this.line2.x = 1920
             }
         }
+    }
 
-        ballCollision()
-        this.ball.onLine = this.ball.onLine2 = false
-        this.physics.arcade.collide(this.line, this.ball, function () { this.ball.onLine = true; }, null, this)
-        this.physics.arcade.collide(this.line2, this.ball, function () { this.ball.onLine2 = true; }, null, this)
+    ballCollision() {
+        this.ball.line = this.ball.line2 = false
+        this.physics.arcade.collide(this.line, this.ball, function () { this.ball.line = true; }, null, this)
+        this.physics.arcade.collide(this.line2, this.ball, function () { this.ball.Line2 = true; }, null, this)
+    }
 
-        ballLost()
-        this.ball.reset(this.world.centerX, this.world.centerY)
-        this.time.events.add(2000, function () { this.ball.body.velocity.set(-200, 0); }, this)
+    ballLost() {
+        this.ball.reset(1920 / 2, 1080 / 2)
+        this.time.events.add(2000, function () { this.ball.body.velocity.set(30, 200); }, this)
     }
 }
-
 export default gameScene
