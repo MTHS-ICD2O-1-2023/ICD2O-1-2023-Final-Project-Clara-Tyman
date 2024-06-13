@@ -40,8 +40,8 @@ class MenuScene extends Phaser.Scene {
         this.startButton.on("pointerdown", () => this.clickButton())
 
         this.menuSceneText = this.add
-        .text(1920 / 2, 1080 / 2 + 350, "Click to play", this.menuSceneTextStyle)
-        .setOrigin(0.5)
+            .text(1920 / 2, 1080 / 2 + 350, "Click to play", this.menuSceneTextStyle)
+            .setOrigin(0.5)
     }
 
     update(time, delta) {
