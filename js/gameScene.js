@@ -41,12 +41,14 @@ class gameScene extends Phaser.Scene {
         // line group
         this.lineGroup = this.physics.add.group()
         this.line = this.physics.add.sprite(1920 / 2, 1080 - 100, "line")
+        this.line.immovable = true;
         this.line2 = this.physics.add.sprite(1920 / 2, 1080 - 1000, "line2")
+        this.line2.immovable = true;
         this.line.scale = 0.4
         this.line2.scale = 0.4
 
         this.ball = this.physics.add.sprite(1920 / 2, 1080 / 2, 'ball')
-        this.ball.body.velocity.set(40, 200)
+        this.ball.body.velocity.set(60, 280)
         this.ball.scale = 0.2
         this.ball.line = false
         this.ball.line2 = false
@@ -109,12 +111,15 @@ class gameScene extends Phaser.Scene {
                 this.line2.x = 1920
             }
         }
-    }
 
-    ballCollision() {
-        this.ball.line = this.ball.line2 = false
-        this.physics.arcade.collide(this.line, this.ball, function () { this.ball.line = true; }, null, this)
-        this.physics.arcade.collide(this.line2, this.ball, function () { this.ball.Line2 = true; }, null, this)
+    this.physics.add.collider(this.line, this.ball, function (lineCollide, ballCollide) {
+        //this.physics.pause()
+        //this.ball.bounce(true)
+        //this.ball.body.setVelocity.y = this.ball.body.velocity.y * (-1)
+        //this.gameOverText = this.add.text(1920 / 2, 1080 / 2, 'Game Over!\nClick to play again.', this.gameOverTextStyle).setOrigin(0.5)
+        //this.gameOverText.setInteractive({ useHandCursor: true })
+        //this.gameOverText.on('pointerdown', () => this.scene.start('gameScene'))
+    }.bind(this))
     }
 
     ballLost() {
