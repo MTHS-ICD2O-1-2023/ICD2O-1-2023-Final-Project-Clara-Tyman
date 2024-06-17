@@ -53,18 +53,20 @@ class gameScene extends Phaser.Scene {
         this.paddleBottom.scale = 0.4
         this.paddleBottom.body.setMass(99999999)
 
+        // ball
         this.ball = this.physics.add.image(1920 / 2, 1080 / 2, 'ball')
         this.ball.body.velocity.set(75, this.BALL_SPEED)
         this.ball.scale = 0.2
         this.ball.body.setMass(1)
-        this.ball.body.collideWorldBounds = true
         // this.ball.setData('paddleTop', true)
         // this.ball.setData('paddleBottom', true)
 
         //  Our colliders
         this.physics.add.collider(this.ball, this.paddleTop, this.hitPaddleTop, null, this);
         this.physics.add.collider(this.ball, this.paddleBottom, this.hitPaddleBottom, null, this);
-    }
+
+        //world boarder reset game
+        }
 
     update(time, delta) {
 
@@ -101,6 +103,13 @@ class gameScene extends Phaser.Scene {
                 this.paddleTop.x = 1920
             }
         }
+
+        if (this.ball.x < 0 || this.ball.x > 1080) {
+            this.ball = this.physics.add.image(1920 / 2, 1080 / 2, 'ball')
+            this.ball.body.velocity.set(40, this.BALL_SPEED)
+            this.ball.scale = 0.2
+            this.ball.body.setMass(1)
+        }
     }
 
     hitPaddleTop (ball, topPaddle) {
@@ -118,5 +127,13 @@ class gameScene extends Phaser.Scene {
         this.ball.body.velocity.y = (-1) * this.BALL_SPEED
         this.ball.body.setVelocityX(-5 * difference)
     }
+
+    //ballLost (ball, border) {
+        //console.log("Hit bottom border")
+        //this.ball = this.physics.add.image(1920 / 2, 1080 / 2, 'ball')
+        //this.ball.body.velocity.set(75, this.BALL_SPEED)
+        //this.ball.scale = 0.2
+        //this.ball.body.setMass(1)
+    //}
 }
 export default gameScene

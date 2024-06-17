@@ -36,12 +36,12 @@ class TitleScene extends Phaser.Scene {
         this.titleSceneBackgroundImage.y = 1080 / 2
 
         this.titleSceneText = this.add
-            .text(1920 / 2, 1080 / 2 + 350, "Bricks VS Ball", this.titleSceneTextStyle)
+            .text(1920 / 2, 1080 / 2 + 350, "The pong game", this.titleSceneTextStyle)
             .setOrigin(0.5)
     }
 
     update(time, delta) {
-        if (time > 6000) {
+        if (time > 5000) {
             this.scene.switch("menuScene")
         }
     }
