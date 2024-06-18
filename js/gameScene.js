@@ -114,6 +114,31 @@ class gameScene extends Phaser.Scene {
             this.ball.body.x = 1915
             this.ball.body.velocity.x = (-1) * this.ball.body.velocity.x
         }
+
+        if (this.ball.body.y < 0) {
+            this.ball.body.reset(1920 / 2, 1080 / 2)
+            this.ball.body.velocity.set(75, this.BALL_SPEED)
+            this.ball.scale = 0.2
+            this.ball.body.setMass(1)
+            this.physics.pause()
+            this.gameOverText = this.add.text(1920 / 2, 1080 / 2, 'Game Over!\nClick to play again.', this.gameOverTextStyle).setOrigin(0.5)
+            this.gameOverText.setInteractive({ useHandCursor: true })
+            this.gameOverText.on('pointerdown', () => this.scene.start('gameScene'))
+            this.score = 0
+        }
+
+        if (this.ball.body.y > 1080) {
+            this.ball.body.reset(1920 / 2, 1080 / 2)
+            this.ball.body.velocity.set(75, this.BALL_SPEED)
+            this.ball.scale = 0.2
+            this.ball.body.setMass(1)
+            this.physics.pause()
+            this.gameOverText = this.add.text(1920 / 2, 1080 / 2, 'Game Over!\nClick to play again.', this.gameOverTextStyle).setOrigin(0.5)
+            this.gameOverText.setInteractive({ useHandCursor: true })
+            this.gameOverText.on('pointerdown', () => this.scene.start('gameScene'))
+            this.score = 0
+            
+        }
     }
 
     hitPaddleTop (ball, topPaddle) {
@@ -122,6 +147,8 @@ class gameScene extends Phaser.Scene {
         let difference = this.paddleTop.x - this.ball.x
         this.ball.body.velocity.y = this.BALL_SPEED
         this.ball.body.setVelocityX(-5 * difference)
+        this.score = this.score + 1
+        this.scoreText.setText('Score: ' + this.score.toString())
     }
 
     hitPaddleBottom (ball, bottomPaddle) {
@@ -130,14 +157,9 @@ class gameScene extends Phaser.Scene {
         let difference = this.paddleBottom.x - this.ball.x
         this.ball.body.velocity.y = (-1) * this.BALL_SPEED
         this.ball.body.setVelocityX(-5 * difference)
+        this.score = this.score + 1
+        this.scoreText.setText('Score: ' + this.score.toString())
     }
 
-    //ballLost (ball, border) {
-        //console.log("Hit bottom border")
-        //this.ball = this.physics.add.image(1920 / 2, 1080 / 2, 'ball')
-        //this.ball.body.velocity.set(75, this.BALL_SPEED)
-        //this.ball.scale = 0.2
-        //this.ball.body.setMass(1)
-    //}
 }
 export default gameScene
