@@ -26,7 +26,7 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true
+            debug: false
         }
     },
     backgroundColor: 0x5f6e7a,
@@ -45,4 +45,4 @@ game.scene.add('titleScene', titleScene)
 game.scene.add("menuScene", menuScene)
 game.scene.add("gameScene", gameScene)
 
-game.scene.start("gameScene")
+game.scene.start("splashScene")
