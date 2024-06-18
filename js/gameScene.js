@@ -34,7 +34,7 @@ class gameScene extends Phaser.Scene {
 
     create(data) {
         //  Enable world bounds, but disable the floor
-        this.physics.world.setBoundsCollision(0, 0, 1920, 1080, 32, false, false, true, true);
+        //this.physics.world.setBoundsCollision(0, 0, 1920, 1080, 32, false, false, true, true);
 
         // Game key input
 
@@ -104,11 +104,15 @@ class gameScene extends Phaser.Scene {
             }
         }
 
-        if (this.ball.x < 0 || this.ball.x > 1080) {
-            this.ball = this.physics.add.image(1920 / 2, 1080 / 2, 'ball')
-            this.ball.body.velocity.set(40, this.BALL_SPEED)
-            this.ball.scale = 0.2
-            this.ball.body.setMass(1)
+        // due to physics, you must always refer to this.ball.body...
+        if (this.ball.body.x < 0) {
+            this.ball.body.x = 5
+            this.ball.body.velocity.x = (-1) * this.ball.body.velocity.x
+        }
+
+        if (this.ball.body.x > 1920) {
+            this.ball.body.x = 1915
+            this.ball.body.velocity.x = (-1) * this.ball.body.velocity.x
         }
     }
 
