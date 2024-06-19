@@ -2,8 +2,8 @@
 
 // Copyright (c) 2024 Clara Tyman All rights reserved
 //
-// Created by: Clara
-// Created on: May 2024
+// Created by: Clara Tyman
+// Created on: June 2024
 // This is the Splash Scene
 
 class SplashScene extends Phaser.Scene {

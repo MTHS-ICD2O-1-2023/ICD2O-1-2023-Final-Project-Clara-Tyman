@@ -11,7 +11,7 @@
                     <mxGeometry x="5" y="28" width="622.22" height="350" as="geometry"/>
                 </mxCell>
                 <mxCell id="4" value="The pong game" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=52;fontFamily=Times New Roman;" parent="2" vertex="1">
-                    <mxGeometry x="160" y="290" width="350" height="80" as="geometry"/>
+                    <mxGeometry x="130" y="150" width="350" height="80" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

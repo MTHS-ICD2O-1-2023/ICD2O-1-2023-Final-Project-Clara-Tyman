@@ -2,8 +2,8 @@
 
 // Copyright (c) 2024 Clara Tyman All rights reserved
 //
-// Created by: Clara
-// Created on: May 2024
+// Created by: Clara Tyman
+// Created on: June 2024
 // This is the Title Scene
 
 class TitleScene extends Phaser.Scene {
@@ -36,7 +36,7 @@ class TitleScene extends Phaser.Scene {
         this.titleSceneBackgroundImage.y = 1080 / 2
 
         this.titleSceneText = this.add
-            .text(1920 / 2, 1080 / 2 + 350, "The pong game", this.titleSceneTextStyle)
+            .text(1920 / 2, 1080 / 2, "The pong game", this.titleSceneTextStyle)
             .setOrigin(0.5)
     }
 

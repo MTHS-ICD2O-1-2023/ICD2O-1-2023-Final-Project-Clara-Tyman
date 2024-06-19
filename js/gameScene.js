@@ -2,7 +2,7 @@
 
 // Copyright (c) 2024 Clara Tyman All rights reserved
 //
-// Created by: Clara
+// Created by: Clara Tyman
 // Created on: June 2024
 // This is the Game Scene
 
@@ -25,16 +25,12 @@ class gameScene extends Phaser.Scene {
     preload() {
         console.log("Game Scene")
         this.load.image("gameSceneImage", "./assets/gameSceneImage.jpg")
-        // this.load.image("line", "./assets/line.png")
-        // this.load.image("line2", "./assets/line2.png")
         this.load.image("ball", "./assets/ball.png")
         this.load.image("paddleTop", "./assets/paddle.png")
         this.load.image("paddleBottom", "./assets/paddle.png")
     }
 
     create(data) {
-        //  Enable world bounds, but disable the floor
-        //this.physics.world.setBoundsCollision(0, 0, 1920, 1080, 32, false, false, true, true);
 
         // Game key input
 
@@ -65,17 +61,18 @@ class gameScene extends Phaser.Scene {
         this.physics.add.collider(this.ball, this.paddleTop, this.hitPaddleTop, null, this);
         this.physics.add.collider(this.ball, this.paddleBottom, this.hitPaddleBottom, null, this);
 
-        //world boarder reset game
         }
 
     update(time, delta) {
 
+        // key functions
         const keyLeftObj = this.input.keyboard.addKey('LEFT')
         const keyRightObj = this.input.keyboard.addKey('RIGHT')
 
         const keyAObj = this.input.keyboard.addKey('A')
         const keyDObj = this.input.keyboard.addKey('D')
 
+        // key mouvements
         if (keyLeftObj.isDown === true) {
             this.paddleBottom.x -= 15
             if (this.paddleBottom.x < 0) {
@@ -104,7 +101,7 @@ class gameScene extends Phaser.Scene {
             }
         }
 
-        // due to physics, you must always refer to this.ball.body...
+        // game boarders
         if (this.ball.body.x < 0) {
             this.ball.body.x = 5
             this.ball.body.velocity.x = (-1) * this.ball.body.velocity.x
@@ -141,6 +138,7 @@ class gameScene extends Phaser.Scene {
         }
     }
 
+    // ball and paddle collisons
     hitPaddleTop (ball, topPaddle) {
         console.log("Hit top paddle")
         this.paddleTop.body.velocity.set(0, 0)
